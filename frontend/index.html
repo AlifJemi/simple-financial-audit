@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Audit System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .transaction {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .transaction-id {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .success { color: #27ae60; }
+        .error { color: #e74c3c; }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Reports specific styles */
+        .report-options {
+            margin-top: 20px;
+        }
+        .report-type {
+            margin-bottom: 20px;
+        }
+        .report-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .report-btn {
+            background-color: #2ecc71;
+        }
+        .report-btn:hover {
+            background-color: #27ae60;
+        }
+        .report-form-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .report-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .header-bar {
+        display: flex;
+        justify-content: space-between; 
+        align-items: center;            
+        }
+        .header-bar h1 {
+        margin: 0;
+        }
+        
+    </style>
+    <link rel="stylesheet" href="view-transactions.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="audit-trail.css">
+    <link rel="stylesheet" href="reports.css">
+    <link rel="stylesheet" href="blockchain-explorer.css">
+</head>
+<body>
+    <div class="header-bar">
+        <h1>🔍 Financial Audit System</h1>
+        <div class="user-profile">
+            <span id="userInfo" class="user-badge">Loading...</span>
+            <button onclick="AuthService.logout()" class="logout-btn">Log Out</button>
+        </div>
+    </div>
+    
+    <div class="tabs">
+        <div class="tab active" data-tab="record">Record Transaction</div>
+        <div class="tab" data-tab="view">View Transactions</div>
+        <div class="tab" data-tab="audit">Audit Trail</div>
+        <div class="tab" data-tab="reports">Generate Reports</div>
+        <div class="tab" data-tab="explorer">Blockchain Explorer</div>
+    </div>
+
+    <div id="record" class="tab-content active">
+        <div class="container">
+            <h2>Record New Transaction</h2>
+            <form id="transactionForm">
+                <div class="form-group">
+                    <label for="amount">Amount ($):</label>
+                    <input type="number" id="amount" required step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="from">From:</label>
+                    <input type="text" id="from" required>
+                </div>
+                <div class="form-group">
+                    <label for="to">To:</label>
+                    <input type="text" id="to" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="auditor">Auditor:</label>
+                    <input type="text" id="auditor" required>
+                </div>
+                <button type="submit">Record Transaction</button>
+            </form>
+            <div id="recordResult"></div>
+        </div>
+    </div>
+
+    <div id="view" class="tab-content">
+        <div class="container">
+            <h2>All Transactions</h2>
+            <button onclick="loadTransactions()">Refresh Transactions</button>
+            <div id="transactionsList"></div>
+        </div>
+    </div>
+
+    <div id="audit" class="tab-content">
+        <div class="container">
+            <h2>Audit Trail</h2>
+            <div class="form-group">
+                <label for="searchId">Transaction ID:</label>
+                <input type="text" id="searchId" placeholder="Enter transaction ID (e.g., tx_123456789)">
+            </div>
+            <button onclick="searchAuditTrail()">Search Audit Trail</button>
+            <div id="auditResult"></div>
+        </div>
+    </div>
+
+    <div id="reports" class="tab-content">
+        <div class="container">
+            <h2>📊 Generate Reports</h2>
+            
+            <div class="report-options">
+                <div class="form-group">
+                    <label for="reportType">Report Type:</label>
+                    <select id="reportType" class="report-type-select">
+                        <option value="summary">Summary Report</option>
+                        <option value="analytics">Analytics Dashboard</option>
+                        <option value="transactions">Transaction Report</option>
+                    </select>
+                </div>
+                
+                <div id="reportFormContainer" class="report-form-container"></div>
+                
+                <div class="report-buttons">
+                    <button onclick="generateReport()" class="generate-btn report-btn">Generate Report</button>
+                    <button onclick="clearReport()" class="clear-btn">Clear</button>
+                </div>
+            </div>
+            
+            <div id="reportResult" class="report-result"></div>
+        </div>
+    </div>
+
+    <div id="explorer" class="tab-content">
+        <div class="container" style="max-width: 100%;">
+            <div class="explorer-header">
+                <h2>🔗 Live Blockchain Explorer</h2>
+                <button onclick="loadBlockchain()" class="refresh-btn">🔄 Refresh Chain</button>
+            </div>
+            <div id="chainContainer" class="chain-wrapper">
+                <div class="loading-state">Loading Blockchain...</div>
+            </div>
+        </div>
+    </div>
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>✏️ Edit Transaction</h2>
+        <p class="modal-subtitle">This will create a new version in the blockchain audit trail.</p>
+        
+        <form id="editForm">
+            <input type="hidden" id="edit-id">
+            
+            <div class="form-group">
+                <label>Transaction ID (Locked)</label>
+                <input type="text" id="edit-id-display" disabled class="locked-input">
+            </div>
+
+            <div class="form-group">
+                <label>Amount ($)</label>
+                <input type="number" id="edit-amount" required step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="edit-description" rows="3" required></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+                <button type="submit" class="save-btn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="app.js"></script>
+    <script src="view-transactions.js"></script>
+    <script src="audit-trail.js"></script>
+    <script src="reports.js"></script>
+    <script src="blockchain-explorer.js"></script>
+</body>
+</html>

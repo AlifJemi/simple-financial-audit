@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Audit System - Access</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Embedded styles for the new toggle functionality */
+        .form-toggle {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .form-toggle a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .form-toggle a:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none !important;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: white;
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>Financial Audit System</h1>
+            <p>Secure Transaction Management</p>
+        </div>
+        
+        <form id="loginForm" class="auth-form">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" id="password" required placeholder="Enter your password">
+                <span id="togglePassword" class="toggle-password">👁️</span>
+            </div>
+        </div>
+            
+            <button type="submit" class="login-btn">
+                <span class="btn-text">Sign In</span>
+                <div class="spinner" style="display: none;"></div>
+            </button>
+
+            <div class="form-toggle">
+                Don't have an account? <a id="showSignup">Sign Up</a>
+            </div>
+        </form>
+
+        <form id="signupForm" class="auth-form hidden">
+            <h2>Create Account</h2>
+            <div class="form-group">
+                <label for="newName">Full Name</label>
+                <input type="text" id="newName" required placeholder="John Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="newEmail">Email Address</label>
+                <input type="email" id="newEmail" required placeholder="name@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="newPassword">Password</label>
+                <input type="password" id="newPassword" required placeholder="Min 6 characters">
+            </div>
+
+            <div class="form-group">
+                <label for="newRole">Select Role</label>
+                <select id="newRole" required>
+                    <option value="viewer">Viewer (Read Only)</option>
+                    <option value="auditor">Auditor (Can Record Data)</option>
+                    <option value="manager">Manager (Can Verify)</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="login-btn">
+                <span class="btn-text">Register</span>
+                <div class="spinner" style="display: none;"></div>
+            </button>
+
+            <div class="form-toggle">
+                Already have an account? <a id="showLogin">Login</a>
+            </div>
+        </form>
+        
+        <div id="messageBox" class="error-message" style="display: none; margin-top: 15px;"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

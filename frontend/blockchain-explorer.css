@@ -1,0 +1,153 @@
+/* Blockchain Explorer Styles */
+.chain-wrapper {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    min-height: 400px;
+    align-items: flex-start;
+}
+
+/* The Block Card */
+.block-card {
+    background: white;
+    min-width: 320px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
+    position: relative;
+    flex-shrink: 0; /* Prevents squishing */
+    transition: transform 0.3s ease;
+}
+
+.block-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: #667eea;
+}
+
+/* Connector Line (The Chain) */
+.block-card::after {
+    content: '';
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    width: 30px;
+    height: 4px;
+    background: #cbd5e0;
+    z-index: 1;
+}
+
+/* Hide connector for last block */
+.block-card:last-child::after {
+    display: none;
+}
+
+/* Genesis Block Style */
+.block-card.genesis {
+    border-top: 5px solid #6f42c1;
+}
+
+.block-card.genesis .block-header {
+    background: #f3f0ff;
+    color: #6f42c1;
+}
+
+/* Header Section */
+.block-header {
+    padding: 15px 20px;
+    background: #f7fafc;
+    border-bottom: 1px solid #edf2f7;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.block-title {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #2d3748;
+}
+
+.block-timestamp {
+    font-size: 0.75rem;
+    color: #718096;
+}
+
+/* Content Section */
+.block-body {
+    padding: 20px;
+}
+
+.hash-group {
+    margin-bottom: 15px;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.hash-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #a0aec0;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.hash-value {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    word-break: break-all;
+    color: #4a5568;
+    display: block;
+}
+
+/* Transaction List inside Block */
+.block-txs {
+    margin-top: 15px;
+    border-top: 1px solid #edf2f7;
+    padding-top: 15px;
+}
+
+.tx-count {
+    font-size: 0.85rem;
+    color: #718096;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.tx-mini-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    padding: 6px 0;
+    border-bottom: 1px dashed #edf2f7;
+}
+
+.tx-mini-amount {
+    font-weight: 700;
+    color: #38a169;
+}
+
+/* Header Buttons */
+.explorer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.refresh-btn {
+    background: #4299e1;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
