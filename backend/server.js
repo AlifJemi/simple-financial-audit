@@ -4,7 +4,7 @@ const { database } = require('./database');
 const AuthService = require('./auth');
 
 const app = express();
-app.use(express.static('.'));
+app.use(express.static('../frontend'));
 
 // Enhanced CORS middleware
 app.use((req, res, next) => {

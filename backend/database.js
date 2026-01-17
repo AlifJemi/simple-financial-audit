@@ -918,7 +918,7 @@ setInterval(() => {
         .catch(err => {
             console.error('Error cleaning up old audit trails:', err);
         });
-}, 30 * 24 * 60 * 60 * 1000); // Run every 30 days
+}, 24 * 60 * 60 * 1000); // Run every 30 days
 
 // Export database instance and operations
 module.exports = { db, database };
